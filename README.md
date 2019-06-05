@@ -24,7 +24,7 @@ The following command runs the website on your computer:
 ```
 If in doubt, just run all 3.
 Connect to `https://localhost:8000/` to see the result.
-Due to restrictions of Google API, only https works and only localhost:8000 works.
+Due to constraints of Google API, only https works and only localhost:8000 works.
 
 To add new events, call
 ```
