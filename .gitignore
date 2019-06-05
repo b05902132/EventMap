@@ -1,0 +1,4 @@
+db.spatialite
+migrations
+__pycache__/
+*.py[cd]
