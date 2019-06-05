@@ -18,6 +18,7 @@ def event_map(request):
     # TODO: show filter
     return HttpResponse('Under construction!')
 
+### The following functions are for user registeration.
 def get_user(request):
     pk = request.session.get('user', None)
     if not pk:
