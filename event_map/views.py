@@ -14,6 +14,7 @@ def event_map(request):
     user = get_user(request)
     if not user:
         return HttpResponseRedirect(reverse('event_map:oauth2_authorize'))
+    # TODO: check credential
     # TODO: show event_map
     # TODO: show filter
     return HttpResponse('Under construction!')
@@ -37,7 +38,6 @@ def register(request):
     flow = get_flow(state=state)
     flow.redirect_uri = request.build_absolute_uri(reverse('event_map:register'))
     authorization_response = request.get_raw_uri()
-    breakpoint()
     flow.fetch_token(authorization_response = authorization_response)
     credentials = flow.credentials
     email = get_email(credentials)

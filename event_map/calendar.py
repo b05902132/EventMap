@@ -17,26 +17,17 @@ def to_time_interval(start_s, end_s):
     """
     return TimeInterval(parse_datetime(start_s), parse_datetime(end_s))
 
-def get_busy_intervals(user, start=None, end=None, *, calendars = ['primary']):
+def get_busy_intervals(user, start, end, *, calendars = ['primary']):
     '''
     Gets time intervals in which the user is busy.
-    start defaults to now, end defaults to one day later.
 
     Calendars are for future expansion, when the users may have more than 1 calendars.
     '''
-    if not start:
-        start = datetime.datetime.utcnow()
-    if not end:
-        end = start + datetime.timedelta(1)
     credentials = pickle.loads(user.credentials)
     calendar = build('calendar', 'v3', credentials=credentials) 
-    request = { "items":[{ "id" : name} for name in calendars] ,"timeMin":datetimetostr(start), "timeMax":datetimetostr(end)}
+    items = [{"id":name} for name in calendars]
+    request = { "items":items  ,"timeMin":datetimetostr(start), "timeMax":datetimetostr(end)}
     response = calendar.freebusy().query(body=request).execute()
     busy_lists = [response['calendars'][calendar_name]['busy'] for calendar_name in calendars]
     busy_intervals = chain(*busy_lists) 
     return [ to_time_interval(*interval.values()) for interval in busy_intervals ]
-
-def test():
-    from .models import User
-    me = User.objects.all()[0]
-    me.get_busy_intervals(datetime.datetime.now(), datetime.datetime.now()+datetime.timedelta(30))
