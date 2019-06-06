@@ -45,7 +45,7 @@ class User(models.Model):
         for condition in args:
             filter_condition &= condition
         for interval in self.get_busy_intervals(start, end):
-            overlapping = Q(start__range=interval) | Q(finish = interval)
+            overlapping = Q(start__range=interval) | Q(finish__range = interval)
             filter_condition &= ~overlapping #exclude overlapping events
         return Event.objects.filter(filter_condition)
             
