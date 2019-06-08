@@ -18,8 +18,9 @@
         }
     
         #addbtn {
-            margin-top: -18em;
+            margin-top: -25em;
             margin-left: 65em;
+            /* margin-bottom: 10em; */
         }
         #btn {
             width: 230px;
@@ -27,15 +28,25 @@
             text-align: center;
             font-size: 12px;
             margin-bottom: 1em;
+            cursor:pointer;
+        }
+        #add {
+            display: none;
+            position: relative;
+        }
+        #input[type="submit"] {
+            background: none;
+            cursor: pointer;
         }
         #select {
             width: 100px;
             height: 30px;
             text-align: center;
+            position: relative;
             font-size: 12px;
             margin-top: 10px;
             margin-bottom: 1em;
-            
+            margin-left: 65rem;
         }
     </style>
     <title>Team 8 Google Maps</title>
@@ -47,10 +58,23 @@
     <!--The div element for the map -->
     
       <div id="map"></div>
+      
       <div id="addbtn">
         <button type="button" class="btn btn-primary" id="btn"> Add Event </button>
-        <div id="select">
-            <select style="width: 230px;">
+        <form id="add" action="database.php">
+            <p>Event Name: &nbsp;<input type="text" name="eventName" placeholder="Event Name"/></p>
+            <p>Event Type: &nbsp; &nbsp;<input type="text" name="eventType" placeholder="Event Type" /></p>
+            <p>Location: &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventLocation" placeholder="Event Location"/></p>
+            <p>Date: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventDate" placeholder="Event Date"/></p>
+            <p>Start Time: &nbsp; &nbsp;<input type="text" name="eventStartTime" placeholder="Event Start Time" /></p>
+            <p>End Time: &nbsp; &nbsp; &nbsp;<input type="text" name="eventEndTime" placeholder="Event End Time" /></p>
+            
+            <input class="btn btn-primary" type="submit" id="submit"><br><br>
+        </form>
+      </div>
+
+      <div id="select">
+            <select style="width: 230px; height: 30px; font-size: 12px;" class="btn btn-primary">
               <option value="volvo">Any types</option>
               <option value="saab">Musics</option>
               <option value="opel">Education</option>
@@ -58,16 +82,21 @@
             </select>
         </div>
     
-      </div>
-    
 
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $("button").click(function() {
+                $("form").toggle();
+            });
+        });
+        
+
         // Initialize and add the map
         function initMap() {
             // The location of Uluru
@@ -104,7 +133,3 @@
 </script> 
 </body>
 </html>
-
-
-
-
