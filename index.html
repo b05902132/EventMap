@@ -63,7 +63,14 @@
         <button type="button" class="btn btn-primary" id="btn"> Add Event </button>
         <form id="add" action="database.php">
             <p>Event Name &nbsp;<input type="text" name="eventName" placeholder="Event Name"/></p>
-            <p>Event Type &nbsp; &nbsp;<input type="text" name="eventType" placeholder="Event Type" /></p>
+            <p>Event Type &nbsp;
+                <select style="width: 200px; height: 30px; font-size: 12px; text-align-last:center;" class="btn btn-primary">
+                    <option value="volvo">Any types</option>
+                    <option value="saab">Musics</option>
+                    <option value="opel">Education</option>
+                    <option value="audi">Health</option>
+                </select>
+            </p>
             <p>Location &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventLocation" placeholder="Event Location"/></p>
             <p>Date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventDate" placeholder="Event Date"/></p>
             <p>Start Time &nbsp; &nbsp;<input type="text" name="eventStartTime" placeholder="Event Start Time" /></p>
