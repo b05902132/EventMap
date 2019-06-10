@@ -12,6 +12,7 @@
     * google-auth-oauthlib 
     * google-auth-httplib2
     * tonyg-rfc3339
+    * django-pickefield
 ## How to run
 On your first run and whenever a model is modified after your last run, run the following;
 ```
@@ -33,11 +34,11 @@ To add new events, call
 and connect to `https://localhost:8000/admin`
 
 ## TIPS:
-Ignore files not in event_map directory.
+Ignore files not in event\_map directory.
 
 Whenever an HTTP response is sent to server, the server runs a python function according to configuration in urls.py.
 
-If you need to run some code but don't want to run an HTTP server, use `./manage.py shell`
+If you need to run some code without firing the server, use `./manage.py shell`
 
 Each model represents relation between a Python object and a database table.
 For example:
@@ -57,9 +58,9 @@ else:
 
 ## TODOS:
 From post important to least important:
-* Filter event by user available time.
+* Filter event by user available time. (DONE)
     * Send emails.
-* Write an event_list template and view: https://docs.djangoproject.com/en/2.2/intro/tutorial03/
+* Write an event\_list template and view: https://docs.djangoproject.com/en/2.2/intro/tutorial03/ (DONE)
     * Will have to add filter functionality. Let Jason do this.
 * Classify events. Use [choice](https://docs.djangoproject.com/en/2.2/ref/models/fields/#choices)
 * Let user save their preferences: e.g. which type of events they like, where does the user live

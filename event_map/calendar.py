@@ -17,13 +17,12 @@ def to_time_interval(start_s, end_s):
     """
     return TimeInterval(parse_datetime(start_s), parse_datetime(end_s))
 
-def get_busy_intervals(user, start, end, *, calendars = ['primary']):
+def get_busy_intervals(credentials, start, end, *, calendars = ['primary']):
     '''
     Gets time intervals in which the user is busy.
 
     Calendars are for future expansion, when the users may have more than 1 calendars.
     '''
-    credentials = pickle.loads(user.credentials)
     calendar = build('calendar', 'v3', credentials=credentials) 
     items = [{"id":name} for name in calendars]
     request = { "items":items  ,"timeMin":datetimetostr(start), "timeMax":datetimetostr(end)}
