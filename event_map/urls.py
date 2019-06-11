@@ -9,5 +9,6 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
     path('event/create', views.EventCreateView.as_view(), name="create"),
+    path('event/edit/<int:pk>', views.EventEditView.as_view(), name="edit"),
     path('', views.event_map, name='event_map'),
 ]

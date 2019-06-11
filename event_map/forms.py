@@ -23,3 +23,7 @@ class EventForm(forms.ModelForm):
         widgets = {
             'location': GooglePointFieldWidget,
         }
+
+class FilterForm(forms.Form):
+    start = DateTimeFieldHTML5()
+    end = DateTimeFieldHTML5()
