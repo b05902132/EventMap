@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta, timezone
 import rfc3339
 import pickle
 
@@ -34,6 +34,8 @@ class User(models.Model):
     credentials = PickledObjectField(editable = False)
     email = models.EmailField()
     notify_before_days = models.IntegerField(default = 1)
+    location = models.PointField()
+    distance = models.FloatField()
 
     def save(self, *args, **kwargs):
         if not getattr(self, 'google_email', None):
@@ -59,26 +61,3 @@ class User(models.Model):
             overlapping = Q(start__lt=interval.end) & Q(end__gt = interval.start)
             filter_condition &= ~overlapping #exclude overlapping events
         return filter_condition
-
-
-# TODO: default preference
-class EventConstraint(models.Model): 
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE) 
-    def get_filter(self):
-        pass #TODO
-    @staticmethod
-    def default_preference(user):
-        pass #TODO
-
-class TimeConstraint(models.Model):
-    link = models.OneToOneField(primary_key = True, to = EventConstraint, on_delete = models.CASCADE)
-    def get_filter(self):
-        pass # TODO
-
-class LocationConstraint(models.Model):
-    link = models.OneToOneField(primary_key = True, to = EventConstraint, on_delete = models.CASCADE)
-    location = models.PointField()
-    distance = models.FloatField() # In kilometer
-    def get_filter(self):
-        return Q(distance__lte = (self.location, Distance(km=self.distance)))
-
