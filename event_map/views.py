@@ -11,24 +11,19 @@ import google.oauth2.credentials
 from .oauth2 import get_flow, get_email 
 from . import models
 from .models import User, Event
-from .forms import EventCreateForm, EventDetailForm
+from .forms import EventForm
 
 # TODO imporve on detail view
-class EventDetailView(UpdateView):
-    form_class = EventDetailForm
+class EventEditView(UpdateView):
+    form_class = EventForm
     model = Event
-    template_name = "event_map/detail.html"
+    template_name = "event_map/event_edit.html"
 
 
 class EventCreateView(FormView):
-    template_name = "event_map/form.html"
-    form_class = EventCreateForm
+    template_name = "event_map/event_create.html"
+    form_class = EventForm
     success_url = reverse_lazy("event_map:event_map")
-
-    def form_valid(self, form):
-        form.save()
-        return super(EventCreateView, self).form_valid(form)
-
 
 def require_login(view):
     ''' Ensure only registered user can access the view. '''
@@ -97,8 +92,3 @@ def oauth2_callback(request):
         user = User.objects.create(credentials=credentials)
     request.session['user'] = user.pk
     return HttpResponseRedirect(reverse('event_map:event_map'))
-
-def user_config(request):
-    pass # TODO
-
-
