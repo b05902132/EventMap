@@ -135,3 +135,9 @@ MAP_WIDGETS = {
     ),
     "GOOGLE_MAP_API_KEY": GOOGLE_MAP_API_KEY,
 }
+
+# Mail settings
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='EventMapJasonLin@gmail.com'
+EMAIL_HOST_PASSWORD='EventMap08'
+EMAIL_USE_TLS=True
