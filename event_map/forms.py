@@ -14,7 +14,7 @@ class DateTimeFieldHTML5(forms.DateTimeField):
         super().__init__(*args, **kwargs)
 
 
-class EventCreateForm(forms.ModelForm): 
+class EventForm(forms.ModelForm): 
     start = DateTimeFieldHTML5()
     end = DateTimeFieldHTML5()
     class Meta:
@@ -24,12 +24,6 @@ class EventCreateForm(forms.ModelForm):
             'location': GooglePointFieldWidget,
         }
 
-
-class EventDetailForm(forms.ModelForm):
-
-    class Meta:
-        model = Event
-        fields = ("name", "description", "location")
-        widgets = {
-            'location': GoogleStaticMapWidget(zoom=12, size="240x240"),
-        } 
+class FilterForm(forms.Form):
+    start = DateTimeFieldHTML5()
+    end = DateTimeFieldHTML5()

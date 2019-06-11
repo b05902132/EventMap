@@ -65,15 +65,9 @@
         {% else %}
         <a href="{% url 'event_map:login' %}" > 登入 </a>
         {% endif %}
-        <button type="button" class="btn btn-primary" id="btn"> Add Event </button>
-        <form id="add" action="database.php">
-            <p>Event Name: &nbsp;<input type="text" name="eventName" placeholder="Event Name"/></p>
-            <p>Event Type: &nbsp; &nbsp;<input type="text" name="eventType" placeholder="Event Type" /></p>
-            <p>Location: &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventLocation" placeholder="Event Location"/></p>
-            <p>Date: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventDate" placeholder="Event Date"/></p>
-            <p>Start Time: &nbsp; &nbsp;<input type="text" name="eventStartTime" placeholder="Event Start Time" /></p>
-            <p>End Time: &nbsp; &nbsp; &nbsp;<input type="text" name="eventEndTime" placeholder="Event End Time" /></p>
-            
+        <button type="button" class="btn btn-primary" id="btn"> Filter: </button>
+        <form id="filter" action="/">
+            {{ form.as_p }} 
             <input class="btn btn-primary" type="submit" id="submit"><br><br>
         </form>
       </div>

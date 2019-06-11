@@ -1,33 +1,28 @@
 from functools import wraps
 from datetime import datetime, timedelta, timezone
+import google.oauth2.credentials
 
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, DetailView, ListView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
-import google.oauth2.credentials
+from django.utils.timezone import get_current_timezone
 
 from .oauth2 import get_flow, get_email 
-from . import models
+from . import models, forms
 from .models import User, Event
-from .forms import EventCreateForm, EventDetailForm
 
 # TODO imporve on detail view
-class EventDetailView(UpdateView):
-    form_class = EventDetailForm
+class EventEditView(UpdateView):
+    form_class = forms.EventForm
     model = Event
-    template_name = "event_map/detail.html"
+    template_name = "event_map/event_edit.html"
 
 class EventCreateView(FormView):
-    template_name = "event_map/form.html"
-    form_class = EventCreateForm
+    template_name = "event_map/event_create.html"
+    form_class = forms.EventForm
     success_url = reverse_lazy("event_map:event_map")
-
-    def form_valid(self, form):
-        form.save()
-        return super(EventCreateView, self).form_valid(form)
-
 
 def require_login(view):
     ''' Ensure only registered user can access the view. '''
@@ -42,16 +37,25 @@ def require_login(view):
         return view(request, *args, **kwargs)
     return new_view
 
+def parse_datetime(dict_obj, name, default = None):
+    string = dict_obj.get(name, None)
+    if string:
+        ret = datetime.strptime(string, '%Y-%m-%dT%H:%M')
+        ret = ret.replace(tzinfo=get_current_timezone()) 
+        return ret 
+    else:
+        return default
+
 def event_map(request):
     user = get_user(request)
     is_logged_in = bool(user)
-    # TODO: add filter form 
-    start = datetime.now(timezone.utc)
-    end = start + timedelta(30) # 30 days from start
+
+    start = parse_datetime(request.GET, 'start', datetime.now(timezone.utc))
+    end = parse_datetime(request.GET, 'end', start + timedelta(30))
     events = Event.within_interval(start, end)
     if user:
         events = events.filter(user.event_filter(start, end))
-    return render(request, 'event_map/index.html', {'event_list': events, 'is_logged_in':is_logged_in})
+    return render(request, 'event_map/index.html', {'event_list': events, 'is_logged_in':is_logged_in, 'form': forms.FilterForm()})
 
 ### The following functions are for user management.  
 
