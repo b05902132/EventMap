@@ -12,19 +12,14 @@
 				margin-right: auto;
 				width: 50%;
 			}
-			.bg {
-				background: #43C6AC;  /* fallback for old browsers */
-				background: -webkit-linear-gradient(to right, #F8FFAE, #43C6AC);  /* Chrome 10-25, Safari 5.1-6 */
-				background: linear-gradient(to right, #F8FFAE, #43C6AC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-			}
 		</style>
 	</head>
 	<body>
 		<div class="container" >
 			{% for event in event_list %}
-				<div class="card bg" style="margin-top: 5em;">	
+				<div class="card" style="margin-top: 5em;">	
 					<h5 class="card-header">{{event.name}}</h5> 
-					<img class="center" src=" https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C{{event.location.x}},{{event.location.y}}&key=AIzaSyCWChHtaVbTFZ1vPjoor6Vp4OAKDUkKc_M">
+					<img class="center" src=" https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C{{event.location.y}},{{event.location.x}}&key=AIzaSyCWChHtaVbTFZ1vPjoor6Vp4OAKDUkKc_M">
 					<div class="card-body">
 						<!-- <h5 class="card-title" style="font-size: 36px;"></h5> -->
 						<p class="card-text"><b>Location:</b> No. 1, Section 4, Roosevelt Rd, Da’an District, Taipei City, 10617</p>
