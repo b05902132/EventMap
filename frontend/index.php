@@ -116,20 +116,20 @@
         
             <div id="addbtn">
                 <button type="button" class="btn btn-primary" id="btn"> Add Event </button>
-                <form id="add" action="database.php">
-                    <p>Event Name &nbsp;<input type="text" name="eventName" placeholder="Event Name"/></p>
+                <form id="add" action="insert.php" method="post">
+                    <p>Event Name &nbsp;<input type="text" name="name" placeholder="Event Name"/></p>
                     <p>Event Type &nbsp;
-                        <select style="width: 200px; height: 30px; font-size: 12px; text-align-last:center;" class="btn btn-primary">
-                            <option value="volvo">Any types</option>
-                            <option value="saab">Musics</option>
-                            <option value="opel">Education</option>
-                            <option value="audi">Health</option>
+                        <select name="type" style="width: 200px; height: 30px; font-size: 12px; text-align-last:center;" class="btn btn-primary">
+                        <option name="any type" value="any types">Any types</option>
+                        <option name="music" value="music">Musics</option>
+                        <option name="education" value="education">Education</option>
+                        <option name="health" value="health">Health</option>
                         </select>
                     </p>
-                    <p>Location &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventLocation" placeholder="Event Location"/></p>
-                    <p>Date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventDate" placeholder="Event Date"/></p>
-                    <p>Start Time &nbsp; &nbsp;<input type="text" name="eventStartTime" placeholder="Event Start Time" /></p>
-                    <p>End Time &nbsp; &nbsp; &nbsp;<input type="text" name="eventEndTime" placeholder="Event End Time" /></p>
+                    <p>Location &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="location" placeholder="Event Location"/></p>
+                    <p>Date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="date" placeholder="YYYY-MM-DD"/></p>
+                    <p>Start Time &nbsp; &nbsp;<input type="text" name="startTime" placeholder="HH:MM:SS" /></p>
+                    <p>End Time &nbsp; &nbsp; &nbsp;<input type="text" name="endTime" placeholder="HH:MM:SS" /></p>
                     
                     <input class="btn btn-primary" type="submit" id="submit"><br><br>
                 </form>
