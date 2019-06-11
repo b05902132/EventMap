@@ -2,8 +2,8 @@ from functools import wraps
 from datetime import datetime, timedelta, timezone
 
 from django.shortcuts import render
-from django.urls import reverse
-from django.views.generic import FormView, DetailView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import FormView, DetailView, ListView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 import google.oauth2.credentials
@@ -11,7 +11,23 @@ import google.oauth2.credentials
 from .oauth2 import get_flow, get_email 
 from . import models
 from .models import User, Event
+from .forms import EventCreateForm, EventDetailForm
 
+# TODO imporve on detail view
+class EventDetailView(UpdateView):
+    form_class = EventDetailForm
+    model = Event
+    template_name = "event_map/detail.html"
+
+
+class EventCreateView(FormView):
+    template_name = "event_map/form.html"
+    form_class = EventCreateForm
+    success_url = reverse_lazy("Event:list")
+
+    def form_valid(self, form):
+        form.save()
+        return super(EventCreateView, self).form_valid(form)
 
 
 def require_login(view):
