@@ -19,7 +19,6 @@ class EventDetailView(UpdateView):
     model = Event
     template_name = "event_map/detail.html"
 
-
 class EventCreateView(FormView):
     template_name = "event_map/form.html"
     form_class = EventCreateForm
@@ -57,6 +56,10 @@ def event_map(request):
 ### The following functions are for user management.  
 
 def get_user(request):
+    '''
+    If the session contains user info, get the corresponding user object
+    from the dtatbase. If the session has no user info, return None.
+    '''
     try:
         return User.objects.filter(pk=request.session['user']).get()
     except (KeyError, models.User.DoesNotExist):
@@ -98,7 +101,24 @@ def oauth2_callback(request):
     request.session['user'] = user.pk
     return HttpResponseRedirect(reverse('event_map:event_map'))
 
-def user_config(request):
-    pass # TODO
+preference_list = ['A', 'B', 'C']
 
+
+@require_login
+def user_preference(request):
+    return render(request, 'event_map/preference.html')
+    pass
+
+@require_login
+def set_preference(request):
+    user = get_user(request)
+    preference = []
+    if not user:
+        return render(request, 'event_map/preference.html')
+    for p in preference_list:
+        if p in request.POST:
+             preference.append(p) 
+    user.preference = ','.join(preference)
+    user.save()
+    return HttpResponseRedirect(reverse('event_map:event_map'))
 

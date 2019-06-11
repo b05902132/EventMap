@@ -9,5 +9,7 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
     path('event/create', views.EventCreateView.as_view(), name="create"),
+    path('preference', views.user_preference, name="preference"),
+    path('set_preference', views.set_preference, name='set_preference'),
     path('', views.event_map, name='event_map'),
 ]

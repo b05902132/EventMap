@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+What is your preference:
+<form action="{% url "event_map:set_preference" %}" method="POST">
+    {% csrf_token %}
+    <input type="checkbox" name="A" value="TRUE"> Musical<br>
+    <input type="checkbox" name="B" value="TRUE"> Talk<br>
+    <input type="checkbox" name="C" value="TRUE"> Sport<br>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
