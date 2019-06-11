@@ -23,6 +23,7 @@ class Event(TimeInterval):
     name = models.CharField(max_length = 255)
     description = models.TextField(blank = True) # Allow empty description
     location = models.PointField(help_text="Location of this event.")
+    event_type = models.CharField(max_length = 50)
 
     @classmethod
     def within_interval(cls, start, end):
@@ -34,6 +35,7 @@ class User(models.Model):
     credentials = PickledObjectField(editable = False)
     email = models.EmailField()
     notify_before_days = models.IntegerField(default = 1)
+    preference = models.TextField(default='')
 
     def save(self, *args, **kwargs):
         if not getattr(self, 'google_email', None):
@@ -53,6 +55,8 @@ class User(models.Model):
         Return an object that can be used to query the events the user preferes.
         '''
         filter_condition = Q()
+        if self.preference:
+            preferred_types = self.preference.split(',')
         for interval in self.get_busy_intervals(start, end):
             overlapping = Q(start__lt=interval.end) & Q(end__gt = interval.start)
             filter_condition &= ~overlapping #exclude overlapping events

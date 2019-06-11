@@ -19,7 +19,7 @@ class EventCreateForm(forms.ModelForm):
     end = DateTimeFieldHTML5()
     class Meta:
         model = Event
-        fields = ("name", "description", "start", "end", "location")
+        fields = ("name", "event_type", "description", "start", "end", "location")
         widgets = {
             'location': GooglePointFieldWidget,
         }
