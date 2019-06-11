@@ -34,8 +34,6 @@ class User(models.Model):
     credentials = PickledObjectField(editable = False)
     email = models.EmailField()
     notify_before_days = models.IntegerField(default = 1)
-    location = models.PointField()
-    distance = models.FloatField()
 
     def save(self, *args, **kwargs):
         if not getattr(self, 'google_email', None):
@@ -55,8 +53,6 @@ class User(models.Model):
         Return an object that can be used to query the events the user preferes.
         '''
         filter_condition = Q()
-        for constraint in self.eventconstraint_set.all():
-            pass #TODO
         for interval in self.get_busy_intervals(start, end):
             overlapping = Q(start__lt=interval.end) & Q(end__gt = interval.start)
             filter_condition &= ~overlapping #exclude overlapping events
