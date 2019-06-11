@@ -10,10 +10,8 @@ from django.template.loader import render_to_string
 class Command(BaseCommand):
     help = 'Send event notification to each user'
     def handle(self, *args, **kwargs):
-        breakpoint()
         sender = settings.EMAIL_HOST_USER
         subject = 'Events for you to attend'
-        msg_template = '<p><a href="https://localhost:8000/event/{}> {} </a> </p>'
 
         now = datetime.now(timezone.utc)
         for user in User.objects.all():

@@ -23,7 +23,7 @@ class EventDetailView(UpdateView):
 class EventCreateView(FormView):
     template_name = "event_map/form.html"
     form_class = EventCreateForm
-    success_url = reverse_lazy("Event:list")
+    success_url = reverse_lazy("event_map:event_map")
 
     def form_valid(self, form):
         form.save()
