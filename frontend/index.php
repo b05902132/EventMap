@@ -3,11 +3,17 @@
     try {
         $conn = new PDO("mysql:host=localhost;dbname=EventMap", $user, $password);
         // echo "Connected to EventMap at $host successfully.";
-        $sql = "SELECT * FROM `maps`";
+        $sql = "SELECT * FROM `maps` WHERE lat IS NULL AND lng IS NULL";
         // $q = $conn->query($sql);
         $q = $conn->prepare($sql) ;
         $q->execute(array());
         $q->setFetchMode(PDO::FETCH_ASSOC);
+
+        $sqlAll = "SELECT * FROM `maps`";
+        $All = $conn->prepare($sqlAll) ;
+        $All->execute(array());
+        $All->setFetchMode(PDO::FETCH_ASSOC);
+
     } catch(PDOException $e) {
         echo 'Database error: ' . $e->getMessage();
     }
@@ -43,7 +49,7 @@
             margin-left: 1em;
             margin-top: 1em;
         }
-        #data {
+        #data, #Alldata {
             display: none;
         }
     
@@ -90,6 +96,7 @@
 
             <?php
                 $event = $q->fetchAll();
+                $Allevent = $All->fetchAll();
                 function utf8ize($d) {
                     if (is_array($d)) {
                         foreach ($d as $k => $v) {
@@ -101,7 +108,8 @@
                     return $d;
                 }
                    
-                echo '<div id="data">' . json_encode(utf8ize($event)) . '</div>';                
+                echo '<div id="data">' . json_encode(utf8ize($event)) . '</div>';     
+                echo '<div id="Alldata">' . json_encode(utf8ize($Allevent)) . '</div>';                
             ?>
   
             <div id="map"></div>            
@@ -183,21 +191,22 @@
                 console.log(location);
             });
 
-
             
             geocoder = new google.maps.Geocoder();
             codeAddress(cdata);
 
+            var Alldata = document.getElementById('Alldata').innerHTML;
+            Alldata = JSON.parse(Alldata);
+
             var infoWind = new google.maps.InfoWindow;
-            Array.prototype.forEach.call(cdata, function(data) {
+            Array.prototype.forEach.call(Alldata, function(data) {
                 var content = document.createElement('div');
                 content.setAttribute("id", "content");
                 var incontent = document.createElement('div');
                 incontent.setAttribute("id", "siteNotice");
                 var h1 = document.createElement('div');
                 h1.setAttribute("id", "firstHeading");
-                h1.setAttribute("class", "firstHeading");
-                h1.setAttribute("style", "font-size: 36px;");
+                h1.setAttribute("style", "font-size: 36px; font-weight: bold;");
                 h1.textContent = data.name;
 
                 var incontent1 = document.createElement('div');
@@ -207,7 +216,8 @@
                 p.innerHTML = `Type: ${data.type}<br />Location: ${data.location}<br />Date:${data.date}<br />Time:${data.startTime} to ${data.endTime}`;
                 incontent1.appendChild(p);
 
-                content.appendChild(incontent).appendChild(h1).appendChild(incontent1);
+                content.appendChild(incontent).appendChild(h1);
+                content.appendChild(incontent1);
 
                 var marker1 = new google.maps.Marker({position: new google.maps.LatLng(data.lat, data.lng), map: map});
                 
