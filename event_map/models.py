@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta, timezone
 import rfc3339
 import pickle
 
@@ -53,32 +53,7 @@ class User(models.Model):
         Return an object that can be used to query the events the user preferes.
         '''
         filter_condition = Q()
-        for constraint in self.eventconstraint_set.all():
-            pass #TODO
         for interval in self.get_busy_intervals(start, end):
             overlapping = Q(start__lt=interval.end) & Q(end__gt = interval.start)
             filter_condition &= ~overlapping #exclude overlapping events
         return filter_condition
-
-
-# TODO: default preference
-class EventConstraint(models.Model): 
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE) 
-    def get_filter(self):
-        pass #TODO
-    @staticmethod
-    def default_preference(user):
-        pass #TODO
-
-class TimeConstraint(models.Model):
-    link = models.OneToOneField(primary_key = True, to = EventConstraint, on_delete = models.CASCADE)
-    def get_filter(self):
-        pass # TODO
-
-class LocationConstraint(models.Model):
-    link = models.OneToOneField(primary_key = True, to = EventConstraint, on_delete = models.CASCADE)
-    location = models.PointField()
-    distance = models.FloatField() # In kilometer
-    def get_filter(self):
-        return Q(distance__lte = (self.location, Distance(km=self.distance)))
-

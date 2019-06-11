@@ -3,11 +3,17 @@
     try {
         $conn = new PDO("mysql:host=localhost;dbname=EventMap", $user, $password);
         // echo "Connected to EventMap at $host successfully.";
-        $sql = "SELECT * FROM `maps`";
+        $sql = "SELECT * FROM `maps` WHERE lat IS NULL AND lng IS NULL";
         // $q = $conn->query($sql);
         $q = $conn->prepare($sql) ;
         $q->execute(array());
         $q->setFetchMode(PDO::FETCH_ASSOC);
+
+        $sqlAll = "SELECT * FROM `maps`";
+        $All = $conn->prepare($sqlAll) ;
+        $All->execute(array());
+        $All->setFetchMode(PDO::FETCH_ASSOC);
+
     } catch(PDOException $e) {
         echo 'Database error: ' . $e->getMessage();
     }
@@ -43,7 +49,7 @@
             margin-left: 1em;
             margin-top: 1em;
         }
-        #data {
+        #data, #Alldata {
             display: none;
         }
     
@@ -90,6 +96,7 @@
 
             <?php
                 $event = $q->fetchAll();
+                $Allevent = $All->fetchAll();
                 function utf8ize($d) {
                     if (is_array($d)) {
                         foreach ($d as $k => $v) {
@@ -101,27 +108,28 @@
                     return $d;
                 }
                    
-                echo '<div id="data">' . json_encode(utf8ize($event)) . '</div>';                
+                echo '<div id="data">' . json_encode(utf8ize($event)) . '</div>';     
+                echo '<div id="Alldata">' . json_encode(utf8ize($Allevent)) . '</div>';                
             ?>
   
             <div id="map"></div>            
         
             <div id="addbtn">
                 <button type="button" class="btn btn-primary" id="btn"> Add Event </button>
-                <form id="add" action="database.php">
-                    <p>Event Name &nbsp;<input type="text" name="eventName" placeholder="Event Name"/></p>
+                <form id="add" action="insert.php" method="post">
+                    <p>Event Name &nbsp;<input type="text" name="name" placeholder="Event Name"/></p>
                     <p>Event Type &nbsp;
-                        <select style="width: 200px; height: 30px; font-size: 12px; text-align-last:center;" class="btn btn-primary">
-                            <option value="volvo">Any types</option>
-                            <option value="saab">Musics</option>
-                            <option value="opel">Education</option>
-                            <option value="audi">Health</option>
+                        <select name="type" style="width: 200px; height: 30px; font-size: 12px; text-align-last:center;" class="btn btn-primary">
+                        <option name="any type" value="any types">Any types</option>
+                        <option name="music" value="music">Musics</option>
+                        <option name="education" value="education">Education</option>
+                        <option name="health" value="health">Health</option>
                         </select>
                     </p>
-                    <p>Location &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventLocation" placeholder="Event Location"/></p>
-                    <p>Date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="eventDate" placeholder="Event Date"/></p>
-                    <p>Start Time &nbsp; &nbsp;<input type="text" name="eventStartTime" placeholder="Event Start Time" /></p>
-                    <p>End Time &nbsp; &nbsp; &nbsp;<input type="text" name="eventEndTime" placeholder="Event End Time" /></p>
+                    <p>Location &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="location" placeholder="Event Location"/></p>
+                    <p>Date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<input type="text" name="date" placeholder="YYYY-MM-DD"/></p>
+                    <p>Start Time &nbsp; &nbsp;<input type="text" name="startTime" placeholder="HH:MM:SS" /></p>
+                    <p>End Time &nbsp; &nbsp; &nbsp;<input type="text" name="endTime" placeholder="HH:MM:SS" /></p>
                     
                     <input class="btn btn-primary" type="submit" id="submit"><br><br>
                 </form>
@@ -183,21 +191,22 @@
                 console.log(location);
             });
 
-
             
             geocoder = new google.maps.Geocoder();
             codeAddress(cdata);
 
+            var Alldata = document.getElementById('Alldata').innerHTML;
+            Alldata = JSON.parse(Alldata);
+
             var infoWind = new google.maps.InfoWindow;
-            Array.prototype.forEach.call(cdata, function(data) {
+            Array.prototype.forEach.call(Alldata, function(data) {
                 var content = document.createElement('div');
                 content.setAttribute("id", "content");
                 var incontent = document.createElement('div');
                 incontent.setAttribute("id", "siteNotice");
                 var h1 = document.createElement('div');
                 h1.setAttribute("id", "firstHeading");
-                h1.setAttribute("class", "firstHeading");
-                h1.setAttribute("style", "font-size: 36px;");
+                h1.setAttribute("style", "font-size: 36px; font-weight: bold;");
                 h1.textContent = data.name;
 
                 var incontent1 = document.createElement('div');
@@ -207,7 +216,8 @@
                 p.innerHTML = `Type: ${data.type}<br />Location: ${data.location}<br />Date:${data.date}<br />Time:${data.startTime} to ${data.endTime}`;
                 incontent1.appendChild(p);
 
-                content.appendChild(incontent).appendChild(h1).appendChild(incontent1);
+                content.appendChild(incontent).appendChild(h1);
+                content.appendChild(incontent1);
 
                 var marker1 = new google.maps.Marker({position: new google.maps.LatLng(data.lat, data.lng), map: map});
                 

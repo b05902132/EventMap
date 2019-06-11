@@ -29,7 +29,7 @@ Due to constraints of Google API, only https works and only localhost:8000 works
 
 To add new events, call
 ```
-./manage.py createsuper
+./manage.py createsuperuser
 ```
 and connect to `https://localhost:8000/admin`
 
