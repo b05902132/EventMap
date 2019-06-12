@@ -1,9 +1,11 @@
 # EventMap
 
 ## UPDATE:
-Now supports user preference. Visit [https://localhost:8000/preference]
+Now supports user preference. Visit https://localhost:8000/preference
+
 Now supports sending email based on user preference. Use `./manage.py notify`.
-Now supports editing events. Visit [https://localhost:8000/events/edit]
+
+Now supports editing events. Visit https://localhost:8000/events/edit
 
 ## On event types:
 Edit `event_map/constants.py` to update event types.
