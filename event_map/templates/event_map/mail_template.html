@@ -25,7 +25,9 @@
 						<p class="card-text"><b>Location:</b> No. 1, Section 4, Roosevelt Rd, Da’an District, Taipei City, 10617</p>
 						<!-- <p class="card-text"><b>Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>{{event.date}}</p> -->
 						<p class="card-text"><b>Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{event.start}} to {{event.end}}</p>
-						<a href="#" class="btn btn-primary" style="margin-top: 20px;">Let's Go</a>
+                                                {% if event.url %}
+                                                <a href="{{event.url}}" class="btn btn-primary" style="margin-top: 20px;">Let's Go</a>
+                                                {% endif %}
 					</div>
 				</div>
 			{% endfor %}

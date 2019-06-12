@@ -1,5 +1,14 @@
 # EventMap
 
+## UPDATE:
+Now supports user preference. Visit [https://localhost:8000/preference]
+Now supports sending email based on user preference. Use `./manage.py notify`.
+Now supports editing events. Visit [https://localhost:8000/events/edit]
+
+## On event types:
+Edit `event_map/constants.py` to update event types.
+
+
 ## Prerequisite
 * Django
     * Everything requried by [Django.gis](https://docs.djangoproject.com/en/2.2/ref/contrib/gis/install/geolibs/)
@@ -59,10 +68,9 @@ else:
 ## TODOS:
 From post important to least important:
 * Filter event by user available time. (DONE)
-    * Send emails.
+    * Send emails. (DONE. use `./manage.py notify`)
 * Write an event\_list template and view: https://docs.djangoproject.com/en/2.2/intro/tutorial03/ (DONE)
-    * Will have to add filter functionality. Let Jason do this.
-* Classify events. Use [choice](https://docs.djangoproject.com/en/2.2/ref/models/fields/#choices)
-* Let user save their preferences: e.g. which type of events they like, where does the user live
-* Write an event management page (It's least important 'cause there's a built-in one, but using that will be **very** obvious.)
-    * Use [forms](https://docs.djangoproject.com/en/2.2/topics/forms/) 
+    * Will have to add filter functionality. (DONE)
+* Classify events. Use [choice](https://docs.djangoproject.com/en/2.2/ref/models/fields/#choices) (DONE)
+* Let user save their preferences: e.g. which type of events they like, where does the user live (DONE)
+* Write an event management page (It's least important 'cause there's a built-in one, but using that will be **very** obvious.) (DONE)

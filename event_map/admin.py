@@ -5,10 +5,8 @@ from . import models
 
 # Register your models here.
 
-@admin.register(models.Event)
+@admin.register(models.Event, models.User)
 class MapAdmin(admin.ModelAdmin):
     formfield_overrides = {
         gisModels.PointField: {'widget': GooglePointFieldWidget},
     }
-
-admin.site.register(models.User)

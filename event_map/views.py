@@ -1,5 +1,5 @@
 from functools import wraps
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import google.oauth2.credentials
 
 from django.shortcuts import render
@@ -7,13 +7,19 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, DetailView, ListView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
-from django.utils.timezone import get_current_timezone
+from django.utils import timezone
 
 from .oauth2 import get_flow, get_email 
 from . import models, forms
 from .models import User, Event
+from .constants import event_types
 
 # TODO imporve on detail view
+class EventListView(ListView):
+    queryset = Event.objects.all()
+    template_name = "event_map/events_list.html"
+    context_object_name = "event_list"
+
 class EventEditView(UpdateView):
     form_class = forms.EventForm
     model = Event
@@ -23,6 +29,10 @@ class EventCreateView(FormView):
     template_name = "event_map/event_create.html"
     form_class = forms.EventForm
     success_url = reverse_lazy("event_map:event_map")
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+        
 
 def require_login(view):
     ''' Ensure only registered user can access the view. '''
@@ -41,7 +51,7 @@ def parse_datetime(dict_obj, name, default = None):
     string = dict_obj.get(name, None)
     if string:
         ret = datetime.strptime(string, '%Y-%m-%dT%H:%M')
-        ret = ret.replace(tzinfo=get_current_timezone()) 
+        ret = timezone.make_aware(ret)
         return ret 
     else:
         return default
@@ -55,7 +65,11 @@ def event_map(request):
     events = Event.within_interval(start, end)
     if user:
         events = events.filter(user.event_filter(start, end))
-    return render(request, 'event_map/index.html', {'event_list': events, 'is_logged_in':is_logged_in, 'form': forms.FilterForm()})
+    return render(request, 'event_map/index.html', {
+            'event_list': events,
+            'is_logged_in':is_logged_in,
+            'form': forms.FilterForm({'start' : start.strftime('%Y-%m-%dT%H:%M'), 'end' : end.strftime('%Y-%m-%dT%H:%M')})
+        })
 
 ### The following functions are for user management.  
 
@@ -105,24 +119,22 @@ def oauth2_callback(request):
     request.session['user'] = user.pk
     return HttpResponseRedirect(reverse('event_map:event_map'))
 
-preference_list = ['A', 'B', 'C']
-
-
 @require_login
 def user_preference(request):
-    return render(request, 'event_map/preference.html')
-    pass
-
-@require_login
-def set_preference(request):
     user = get_user(request)
-    preference = []
-    if not user:
-        return render(request, 'event_map/preference.html')
-    for p in preference_list:
-        if p in request.POST:
-             preference.append(p) 
-    user.preference = ','.join(preference)
-    user.save()
-    return HttpResponseRedirect(reverse('event_map:event_map'))
+    if request.POST:
+        # update user preference
+        preference = [ p for p in event_types if p in request.POST ]
+        user.preference = ','.join(preference)
+        user.save()
+        form = forms.UserForm(request.POST, instance = user)
+        form.save()
+        return HttpResponseRedirect(reverse('event_map:event_map'))
+    else:
+        current_preference = user.preference.split(',') if user.preference else [] 
+        return render(request, 'event_map/preference.html', {
+            'event_types':event_types,
+            'preferences':current_preference,
+            'form':forms.UserForm(instance = user),
+            }) 
 

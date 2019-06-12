@@ -1,10 +1,12 @@
-from datetime import datetime, timezone, timedelta
+from datetime import timedelta
+
 from django.core.management import BaseCommand
 from django.core.mail import send_mail
 from event_map.models import User, Event
 from django.urls import reverse 
 from django.conf import settings
 from django.utils.html import strip_tags
+from django.utils.timezone import now
 from django.template.loader import render_to_string
 
 class Command(BaseCommand):
@@ -13,9 +15,8 @@ class Command(BaseCommand):
         sender = settings.EMAIL_HOST_USER
         subject = 'Events for you to attend'
 
-        now = datetime.now(timezone.utc)
         for user in User.objects.all():
-            start = now + timedelta(user.notify_before_days)
+            start = now() + timedelta(user.notify_before_days)
             end = start + timedelta(1)
             busy_filter = user.event_filter(start, end)
             events = Event.within_interval(start,end).filter(busy_filter) 
