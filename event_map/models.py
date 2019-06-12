@@ -80,6 +80,7 @@ class User(models.Model):
     def _preference_filter(self):
         if self.preference:
             ret = Q()
+            preferred_types = self.preference.split(',')
             for event_type in preferred_types:
                 ret |= Q(event_type = event_type)
             return ret
