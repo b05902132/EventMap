@@ -20,7 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hab%tsc@34(&x)@+pg(ai=9s!p)l1c(kr1d&-m_a(^tycr-95#'
+TEST_KEY = 'hab%tsc@34(&x)@+pg(ai=9s!p)l1c(kr1d&-m_a(^tycr-95#'
+SECRET_KEY = os.environ.get("EVENT_MAP_KEY", TEST_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -124,7 +125,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = './static'
 
-GOOGLE_MAP_API_KEY = 'AIzaSyCWChHtaVbTFZ1vPjoor6Vp4OAKDUkKc_M'
+# Settings required by EventMap
+
+GOOGLE_MAP_API_KEY = os.environ["GOOGLE_MAP_API_KEY"]
+GOOGLE_OAUTH_SECRET = os.environ["GOOGLE_OAUTH_SECRET"]
 
 MAP_WIDGETS = {
     "GooglePointFieldWidget": (
@@ -137,7 +141,7 @@ MAP_WIDGETS = {
 }
 
 # Mail settings
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER='EventMapJasonLin@gmail.com'
-EMAIL_HOST_PASSWORD='EventMap08'
-EMAIL_USE_TLS=True
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = bool(os.environ.get('EMAIL_USE_TLS', True))

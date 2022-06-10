@@ -1,18 +1,20 @@
 import google.oauth2.credentials
 import pickle
+import json
+
 from google_auth_oauthlib.flow import Flow
 from googleapiclient import discovery
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.conf import settings
 
-CLIENT_SECRETE_FILE = 'client_secret.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/userinfo.email' , 'openid']
 
 ### Helper functions
 
 def get_flow(*args, **kwargs):
-    return Flow.from_client_secrets_file(
-            CLIENT_SECRETE_FILE,
+    return Flow.from_client_config(
+            json.loads(settings.GOOGLE_OAUTH_SECRET),
             scopes = SCOPES, *args, **kwargs)
 
 def get_email(credentials):

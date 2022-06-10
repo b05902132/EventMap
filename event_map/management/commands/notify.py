@@ -21,6 +21,9 @@ class Command(BaseCommand):
             busy_filter = user.event_filter(start, end)
             events = Event.within_interval(start,end).filter(busy_filter) 
             if events:
-                html_msg = render_to_string('event_map/mail_template.html', {'event_list':events})
+                html_msg = render_to_string('event_map/mail_template.html', {
+                    'event_list':events,
+                    'GOOGLE_MAP_API_KEY': settings.GOOGLE_MAP_API_KEY,
+                })
                 plain_msg = strip_tags(html_msg)
                 send_mail(subject, plain_msg , sender, [user.email], fail_silently=False, html_message = html_msg) 

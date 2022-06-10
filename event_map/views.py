@@ -8,6 +8,7 @@ from django.views.generic import FormView, DetailView, ListView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
+from django.conf import settings
 
 from .oauth2 import get_flow, get_email 
 from . import models, forms
@@ -68,7 +69,8 @@ def event_map(request):
     return render(request, 'event_map/index.html', {
             'event_list': events,
             'is_logged_in':is_logged_in,
-            'form': forms.FilterForm({'start' : start.strftime('%Y-%m-%dT%H:%M'), 'end' : end.strftime('%Y-%m-%dT%H:%M')})
+            'form': forms.FilterForm({'start' : start.strftime('%Y-%m-%dT%H:%M'), 'end' : end.strftime('%Y-%m-%dT%H:%M')}),
+            'GOOGLE_MAP_API_KEY': settings.GOOGLE_MAP_API_KEY,
         })
 
 ### The following functions are for user management.  
