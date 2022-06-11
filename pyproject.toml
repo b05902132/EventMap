@@ -6,7 +6,7 @@ authors = ["b05902132 <b05902132@csie.ntu.edu.tw>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = "^2"
+django = "^3"
 google-api-python-client = "^2.50.0"
 google-auth = "^2.7.0"
 tonyg-rfc3339 = "^0.1"
