@@ -16,8 +16,8 @@ from .constants import event_types
 
 
 class TimeInterval(models.Model):
-    start = models.DateTimeField()
-    end = models.DateTimeField()
+    start = models.DateTimeField(db_index = True)
+    end = models.DateTimeField(db_index = True)
     class Meta:
         abstract = True
 
