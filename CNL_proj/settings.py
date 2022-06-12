@@ -133,6 +133,9 @@ STATIC_ROOT = './static'
 
 # Settings required by EventMap
 
+GEOS_LIBRARY_PATH = os.environ.get("GEOS_LIBRARY_PATH")
+GDAL_LIBRARY_PATH = os.environ.get("GDAL_LIBRARY_PATH")
+
 GOOGLE_MAP_API_KEY = os.environ["GOOGLE_MAP_API_KEY"]
 GOOGLE_OAUTH_SECRET = os.environ["GOOGLE_OAUTH_SECRET"]
 
