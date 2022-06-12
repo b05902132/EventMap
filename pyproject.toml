@@ -14,6 +14,7 @@ django-picklefield = "^3.0.1"
 django-map-widgets = "^0.4.0"
 google-auth-oauthlib = "^0.5.1"
 google-auth-httplib2 = "^0.1.0"
+dj-database-url = {git = "https://github.com/jazzband/dj-database-url"}
 
 [tool.poetry.dev-dependencies]
 django-sslserver = "^0.22"

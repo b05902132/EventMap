@@ -37,6 +37,24 @@ python-versions = ">=3.5.0"
 unicode_backport = ["unicodedata2"]
 
 [[package]]
+name = "dj-database-url"
+version = "0.5.0"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+develop = false
+
+[package.dependencies]
+Django = ">3.2"
+
+[package.source]
+type = "git"
+url = "https://github.com/jazzband/dj-database-url"
+reference = "master"
+resolved_reference = "389febf692e07e97880d4c20f57c2e9c3d259357"
+
+[[package]]
 name = "django"
 version = "3.2.13"
 description = "A high-level Python Web framework that encourages rapid development and clean, pragmatic design."
@@ -352,7 +370,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "c1afe4f35219f1c72d8c0c1d2c87c07c6312b2fc3ad60b54aac30a650616cac4"
+content-hash = "a17086523ab1a8307dee67b726940045a90b68532dabb0aeae9b9093b2074eaf"
 
 [metadata.files]
 asgiref = [
@@ -371,6 +389,7 @@ charset-normalizer = [
     {file = "charset-normalizer-2.0.12.tar.gz", hash = "sha256:2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597"},
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
+dj-database-url = []
 django = [
     {file = "Django-3.2.13-py3-none-any.whl", hash = "sha256:b896ca61edc079eb6bbaa15cf6071eb69d6aac08cce5211583cfb41515644fdf"},
     {file = "Django-3.2.13.tar.gz", hash = "sha256:6d93497a0a9bf6ba0e0b1a29cccdc40efbfc76297255b1309b3a884a688ec4b6"},
