@@ -24,6 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", False))
 
+# Use django-sslserver
+DEV_SSLSERVER = bool(os.environ.get("DEV_SSLSERVER", False))
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 TEST_KEY = 'hab%tsc@34(&x)@+pg(ai=9s!p)l1c(kr1d&-m_a(^tycr-95#'
@@ -49,8 +52,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'mapwidgets',
-    'sslserver', 
 ]
+
+if DEV_SSLSERVER:
+    INSTALLED_APPS.append('sslserver')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
