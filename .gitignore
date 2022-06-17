@@ -1,3 +1,6 @@
 db.spatialite
+.env
 __pycache__/
 *.py[cd]
+tls.key
+tls.crt
